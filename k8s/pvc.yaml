@@ -4,9 +4,6 @@ metadata:
   name: project2-pv-isaac
   namespace: isaac
 spec:
-  selector:
-    matchLabels:
-      namespace: isaac
   accessModes:
     - ReadWriteMany
   resources:
