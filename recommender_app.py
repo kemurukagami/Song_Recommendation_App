@@ -8,35 +8,26 @@ with open("model_full.pickle", "rb") as f:
     rules = pickle.load(f)
 
 def get_recommendations(user_songs, rules, top_n=5):
-    """
-    Generate song recommendations based on a user's favorite songs.
-    
-    Parameters:
-        user_songs (list): List of songs provided by the user.
-        rules (DataFrame): Association rules generated from the dataset.
-        top_n (int): Number of top recommendations to return.
-        
-    Returns:
-        List of recommended songs.
-    """
     recommendations = {}
-    # Iterate over each rule in the rules DataFrame
+    user_set = set(user_songs)
+    print("User songs:", user_set)  # Debug print
+
     for idx, rule in rules.iterrows():
         antecedents = set(rule['antecedents'])
         consequents = set(rule['consequents'])
-        # If the rule's antecedents are all in the user's song list,
-        # then consider the consequents for recommendation
-        if antecedents.issubset(set(user_songs)):
+        # Debug: print rule details
+        print(f"Evaluating rule: if {antecedents} then {consequents}")
+        if antecedents.issubset(user_set):
+            print("Match found for rule:", rule)
             for song in consequents:
-                if song not in user_songs:
+                if song not in user_set:
                     recommendations.setdefault(song, []).append(rule['confidence'])
                     
-    # Average the confidence scores for each recommended song
     rec_confidences = {song: sum(conf_list) / len(conf_list) for song, conf_list in recommendations.items()}
-    # Sort recommendations by average confidence (highest first)
     sorted_recs = sorted(rec_confidences.items(), key=lambda x: x[1], reverse=True)
     
     return [song for song, conf in sorted_recs][:top_n]
+
 
 @app.route('/api/recommend', methods=['POST'])
 def recommend():

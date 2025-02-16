@@ -17,7 +17,7 @@ df_trans = pd.DataFrame(te_array, columns=te.columns_)
 
 # 4. Extract frequent itemsets using the Apriori algorithm
 # Adjust min_support as needed; a higher threshold may reduce memory usage
-frequent_itemsets = apriori(df_trans, min_support=0.05, use_colnames=True)
+frequent_itemsets = apriori(df_trans, min_support=0.02, use_colnames=True)
 
 # 5. Generate association rules with a minimum confidence threshold
 rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.5)
