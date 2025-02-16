@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: project2-pv-isaac
+  namespace: isaac
+spec:
+  selector:
+    matchLabels:
+      namespace: isaac
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard

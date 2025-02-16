@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: playlist-recommender
+  labels:
+    app: isaac-playlist-recommender
+spec:
+  replicas: 1  # Adjust as needed
+  selector:
+    matchLabels:
+      app: isaac-playlist-recommender
+  template:
+    metadata:
+      labels:
+        app: isaac-playlist-recommender
+    spec:
+      containers:
+        - name: playlist-recommender-ml
+          image: kemurukagami/playlists-recommender-system-ml:0.1
+          volumeMounts:
+            - name: shared-volume
+              mountPath: /shared
+        - name: playlist-recommender-frontend
+          image: kemurukagami/playlists-recommender-system-frontend:0.1
+          ports:
+            - containerPort: 52008
+          volumeMounts:
+            - name: shared-volume
+              mountPath: /shared
+      volumes:
+        - name: shared-volume
+          persistentVolumeClaim:
+            claimName: project2-pv-isaac 
