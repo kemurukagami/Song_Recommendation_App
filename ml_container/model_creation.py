@@ -4,8 +4,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 import pickle
 
 # 1. Load the dataset
-# Assumes the CSV has columns "playlist_id" and "song"
-df = pd.read_csv("2023_spotify_ds1.csv")
+df = pd.read_csv("../dataset/2023_spotify_ds1.csv")
 
 # 2. Group songs by playlist id using the entire dataset
 transactions = df.groupby("pid")["track_name"].apply(list).tolist()
@@ -16,15 +15,18 @@ te_array = te.fit(transactions).transform(transactions)
 df_trans = pd.DataFrame(te_array, columns=te.columns_)
 
 # 4. Extract frequent itemsets using the Apriori algorithm
-# Adjust min_support as needed; a higher threshold may reduce memory usage
-frequent_itemsets = apriori(df_trans, min_support=0.02, use_colnames=True)
+# Lowering min_support to 0.02 to include less frequent items (like Bohemian Rhapsody)
+frequent_itemsets = apriori(df_trans, min_support=0.03, use_colnames=True)
 
-# 5. Generate association rules with a minimum confidence threshold
+# 5. Generate association rules with a minimum confidence threshold of 0.5
 rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.5)
 rules = rules[rules['lift'] > 1]  # Optionally filter by lift
 
+# Sort the rules by lift in descending order and return the top 10
+top_rules = rules.sort_values(by='lift', ascending=False).head(10)
+
 # 6. Persist the generated model (association rules)
-with open("model_full.pickle", "wb") as f:
+with open("../model/model_full.pickle", "wb") as f:
     pickle.dump(rules, f)
 
-print(rules.head())
+print(top_rules)

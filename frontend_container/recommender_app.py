@@ -4,19 +4,16 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 # Load the association rules model from the full dataset
-with open("model_full.pickle", "rb") as f:
+with open("../model/model_full.pickle", "rb") as f:
     rules = pickle.load(f)
 
 def get_recommendations(user_songs, rules, top_n=5):
     recommendations = {}
     user_set = set(user_songs)
-    print("User songs:", user_set)  # Debug print
 
     for idx, rule in rules.iterrows():
         antecedents = set(rule['antecedents'])
         consequents = set(rule['consequents'])
-        # Debug: print rule details
-        print(f"Evaluating rule: if {antecedents} then {consequents}")
         if antecedents.issubset(user_set):
             print("Match found for rule:", rule)
             for song in consequents:
