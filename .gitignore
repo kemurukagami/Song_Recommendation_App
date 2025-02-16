@@ -1,0 +1,50 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environments
+venv/
+env/
+.idea/
+.vscode/
+.DS_Store
+
+# Ignore logs and temporary files
+*.log
+*.out
+*.tmp
+
+# Ignore dataset files (DO NOT push large files)
+*.csv
+*.tsv
+*.json
+*.pickle
+/home/datasets/
+
+# Ignore Docker & Kubernetes files (built containers)
+*.tar
+*.img
+*.db
+*.pid
+docker-compose.override.yml
+
+# Ignore environment variable files (for security)
+.env
+*.secret
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore model files (Pickle, HDF5, TensorFlow, etc.)
+*.h5
+*.hdf5
+*.onnx
+*.pb
+model/
+
+# Ignore dependency files
+pip-log.txt
+poetry.lock
+Pipfile.lock
