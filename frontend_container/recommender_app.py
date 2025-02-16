@@ -1,50 +1,66 @@
-import pickle
 from flask import Flask, request, jsonify
+import pickle
+import os
+import time
 
 app = Flask(__name__)
 
-# Load the association rules model from the full dataset
-with open("../model/model_full.pickle", "rb") as f:
-    rules = pickle.load(f)
+# Model file path
+MODEL_PATH = "/shared/model_full.pickle"
 
-def get_recommendations(user_songs, rules, top_n=5):
-    recommendations = {}
-    user_set = set(user_songs)
+# Initialize global variables
+model = None
+MODEL_VERSION = "N/A"
+MODEL_DATE = "N/A"
+last_modified = None
 
-    for idx, rule in rules.iterrows():
-        antecedents = set(rule['antecedents'])
-        consequents = set(rule['consequents'])
-        if antecedents.issubset(user_set):
-            print("Match found for rule:", rule)
-            for song in consequents:
-                if song not in user_set:
-                    recommendations.setdefault(song, []).append(rule['confidence'])
-                    
-    rec_confidences = {song: sum(conf_list) / len(conf_list) for song, conf_list in recommendations.items()}
-    sorted_recs = sorted(rec_confidences.items(), key=lambda x: x[1], reverse=True)
+def load_model():
+    """Loads the model from file if it has changed."""
+    global model, MODEL_VERSION, MODEL_DATE, last_modified
     
-    return [song for song, conf in sorted_recs][:top_n]
+    if not os.path.exists(MODEL_PATH):
+        model = None
+        MODEL_VERSION = "N/A"
+        MODEL_DATE = "N/A"
+        return
 
+    # Check the last modified timestamp
+    modified_time = os.path.getmtime(MODEL_PATH)
+    
+    if last_modified is None or modified_time > last_modified:
+        print("Reloading model...")
+        with open(MODEL_PATH, "rb") as f:
+            model = pickle.load(f)
+        last_modified = modified_time
+        MODEL_VERSION = "1.1"  # Increment if tracking updates
+        MODEL_DATE = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(modified_time))
 
-@app.route('/api/recommend', methods=['POST'])
+# API endpoint to get recommendations
+@app.route("/api/recommend", methods=["POST"])
 def recommend():
-    data = request.get_json(force=True)
-    user_songs = data.get("songs", [])
+    load_model()  # Reload model if updated
     
-    if not user_songs:
-        return jsonify({"error": "No songs provided in the request."}), 400
-    
-    # Get recommendations based on the user's input songs
-    recommendations = get_recommendations(user_songs, rules)
-    
-    response = {
-        "songs": recommendations,
-        "version": "1.0",
-        "model_date": "2023-04-20"  # Update with the actual model update date as needed
-    }
-    
-    return jsonify(response)
+    if model is None:
+        return jsonify({"error": "Model not loaded"}), 500
 
-if __name__ == '__main__':
-    # Run the Flask app on all interfaces on port 52008
+    try:
+        data = request.get_json(force=True)
+        input_songs = set(data.get("songs", []))
+
+        recommended_songs = set()
+        for _, row in model.iterrows():
+            antecedents = set(row["antecedents"])
+            consequents = set(row["consequents"])
+            if antecedents.issubset(input_songs):
+                recommended_songs.update(consequents)
+
+        return jsonify({
+            "songs": list(recommended_songs),
+            "version": MODEL_VERSION,
+            "model_date": MODEL_DATE
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=52008)
