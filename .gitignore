@@ -17,10 +17,8 @@ env/
 *.tmp
 
 # Ignore dataset files (DO NOT push large files)
-*.csv
 *.tsv
 *.json
-*.pickle
 /home/datasets/
 
 # Ignore Docker & Kubernetes files (built containers)
@@ -48,5 +46,3 @@ model/
 pip-log.txt
 poetry.lock
 Pipfile.lock
-
-2023_spotify_ds1.csv
