@@ -8,8 +8,8 @@ import os
 IN_DOCKER = os.path.exists("/app")
 
 # Use appropriate path
-DATA_DIR = "/app/data" if IN_DOCKER else "./data"
-MODEL_PATH = "/app/model/model.pickle" if IN_DOCKER else "./model/model_full.pickle"
+DATA_DIR = "/app/shared/data" if IN_DOCKER else "./data"
+MODEL_PATH = "/app/shared/model/model.pickle" if IN_DOCKER else "./model/model_full.pickle"
 
 # Ensure directories exist (only needed locally)
 if not os.path.exists(DATA_DIR):

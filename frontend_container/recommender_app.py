@@ -8,7 +8,7 @@ app = Flask(__name__)
 # Check if running inside Docker (Docker sets the `container` environment variable)
 IN_DOCKER = os.path.exists("/app")
 
-MODEL_PATH = "/app/model/model.pickle" if IN_DOCKER else "./model/model_full.pickle"
+MODEL_PATH = "/app/shared/model/model.pickle" if IN_DOCKER else "./model/model_full.pickle"
 
 # Initialize global variables
 model = None

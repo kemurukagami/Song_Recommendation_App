@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: isaac-playlist-recommender-service
+  name: isaac-playlists-recommender-service
   namespace: isaac
 spec:
   type: LoadBalancer
   selector:
-    app: isaac-playlist-recommender
+    app: isaac-playlists-recommender-frontend
   ports:
     - protocol: TCP
       port: 80
