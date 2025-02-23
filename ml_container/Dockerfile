@@ -10,5 +10,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the ML model script into the container
 COPY generate_model.py .
 
+COPY data/ data/
+
+COPY model/ model/
+
 # Run the script automatically when the container starts
 CMD ["python", "generate_model.py"]

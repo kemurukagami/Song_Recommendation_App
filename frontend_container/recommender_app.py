@@ -5,8 +5,10 @@ import time
 
 app = Flask(__name__)
 
-# Model file path
-MODEL_PATH = "/shared/model_full.pickle"
+# Check if running inside Docker (Docker sets the `container` environment variable)
+IN_DOCKER = os.path.exists("/app")
+
+MODEL_PATH = "/app/model/model.pickle" if IN_DOCKER else "./model/model_full.pickle"
 
 # Initialize global variables
 model = None
@@ -32,11 +34,11 @@ def load_model():
         with open(MODEL_PATH, "rb") as f:
             model = pickle.load(f)
         last_modified = modified_time
-        MODEL_VERSION = "1.1"  # Increment if tracking updates
+        MODEL_VERSION = "0.1"
         MODEL_DATE = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(modified_time))
 
 # API endpoint to get recommendations
-@app.route("/api/recommend", methods=["POST"])
+@app.route("/api/recommender", methods=["POST"])
 def recommend():
     load_model()  # Reload model if updated
     
