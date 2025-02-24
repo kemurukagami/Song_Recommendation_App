@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: playlist-recommender 
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: isaac-playlists-recommender-ml
