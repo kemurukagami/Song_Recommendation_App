@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: playlist-dataset-config
-  namespace: isaac
-data:
-  dataset: "/app/shared/data/2023_spotify_ds1.csv"
