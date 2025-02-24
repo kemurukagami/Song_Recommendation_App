@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: playlists-recommender-frontend
-        image: kemurukagami/playlists-recommender-system-frontend:0.4
+        image: kemurukagami/playlists-recommender-system-frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 52008
         volumeMounts:

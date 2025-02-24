@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: playlists-recommender-ml
-        image: kemurukagami/playlists-recommender-system-ml:0.3
+        image: kemurukagami/playlists-recommender-system-ml:latest
         volumeMounts:
         - name: shared-storage
           mountPath: /app/shared

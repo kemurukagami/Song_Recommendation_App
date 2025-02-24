@@ -4,44 +4,50 @@ from mlxtend.frequent_patterns import apriori, association_rules
 import pickle
 import os
 
-# Check if running inside Docker (Docker sets the `container` environment variable)
+# 📌 Read dataset path from environment variable (set by Kubernetes ConfigMap)
+DATASET_FILE = os.getenv("DATASET_FILE", "/app/shared/data/2023_spotify_ds1.csv")  # Default to ds1 if missing
+
+# Check if running inside Docker
 IN_DOCKER = os.path.exists("/app")
 
-# Use appropriate path
+# 🔹 Define paths (Updated to use `/app/shared/data/` as dataset path)
 DATA_DIR = "/app/shared/data" if IN_DOCKER else "./data"
 MODEL_PATH = "/app/shared/model/model.pickle" if IN_DOCKER else "./model/model_full.pickle"
 
 # Ensure directories exist (only needed locally)
-if not os.path.exists(DATA_DIR):
-    os.makedirs(DATA_DIR, exist_ok=True)
-if not os.path.exists(os.path.dirname(MODEL_PATH)):
-    os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
 
-# Load dataset
-df = pd.read_csv(f"{DATA_DIR}/2023_spotify_ds1.csv")
+# 🔹 Load dataset (from Kubernetes ConfigMap path)
+print(f"Loading dataset from: {DATASET_FILE}")
 
-# 2. Group songs by playlist id using the entire dataset
+# Ensure dataset file exists
+if not os.path.exists(DATASET_FILE):
+    raise FileNotFoundError(f"Dataset not found: {DATASET_FILE}")
+
+df = pd.read_csv(DATASET_FILE)
+
+# 🔹 Group songs by playlist ID using the entire dataset
 transactions = df.groupby("pid")["track_name"].apply(list).tolist()
 
-# 3. Transform transactions into a one-hot encoded DataFrame
+# 🔹 Transform transactions into a one-hot encoded DataFrame
 te = TransactionEncoder()
 te_array = te.fit(transactions).transform(transactions)
 df_trans = pd.DataFrame(te_array, columns=te.columns_)
 
-# 4. Extract frequent itemsets using the Apriori algorithm
-# Lowering min_support to 0.03 to include less frequent items
+# 🔹 Extract frequent itemsets using the Apriori algorithm
 frequent_itemsets = apriori(df_trans, min_support=0.04, use_colnames=True)
 
-# 5. Generate association rules with a minimum confidence threshold of 0.5
+# 🔹 Generate association rules with minimum confidence threshold of 0.5
 rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.5)
 rules = rules[rules['lift'] > 1]  # Optionally filter by lift
 
-# Sort the rules by lift in descending order and return the top 10 (for inspection)
+# Sort the rules by lift in descending order (top 10 for inspection)
 top_rules = rules.sort_values(by='lift', ascending=False).head(10)
 
-# 6. Persist the generated model (association rules)
-# Use the mounted shared volume path (e.g., /shared) instead of a relative path
+# 🔹 Persist the generated model (association rules)
 with open(MODEL_PATH, "wb") as f:
     pickle.dump(rules, f)
 
+print(f"Model saved at: {MODEL_PATH}")
 print(top_rules)
