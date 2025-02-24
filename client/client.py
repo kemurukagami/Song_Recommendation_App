@@ -5,15 +5,16 @@ import requests
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python client.py <song1> [<song2> ...]")
+        print("Usage: python client.py <IP> <song1> [<song2> ...]")
         sys.exit(1)
 
     # Collect the list of songs from the command-line arguments
-    songs = sys.argv[1:]
+    IP = sys.argv[1]
+    songs = sys.argv[2:]
     payload = {"songs": songs}
 
     # For isaac, the Flask server runs on port 52008.
-    url = "http://localhost:52008/api/recommend"
+    url = f"http://{IP}:52008/api/recommender"
     headers = {"Content-Type": "application/json"}
 
     try:
