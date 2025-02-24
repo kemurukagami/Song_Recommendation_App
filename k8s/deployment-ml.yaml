@@ -14,10 +14,18 @@ spec:
     metadata:
       labels:
         app: isaac-playlists-recommender-ml
+      annotations:
+        checksum/config: "{{ .Files.Get `config.yaml` | sha256sum }}"  # Forces redeployment on dataset change
     spec:
       containers:
       - name: playlists-recommender-ml
         image: kemurukagami/playlists-recommender-system-ml:latest
+        env:
+        - name: DATASET_FILE
+          valueFrom:
+            configMapKeyRef:
+              name: playlist-dataset-config
+              key: dataset
         volumeMounts:
         - name: shared-storage
           mountPath: /app/shared
