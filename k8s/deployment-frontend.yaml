@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: isaac-playlists-recommender-frontend
   namespace: isaac
+  labels:
+    app.kubernetes.io/instance: playlist-recommender 
 spec:
   replicas: 2
   selector:
