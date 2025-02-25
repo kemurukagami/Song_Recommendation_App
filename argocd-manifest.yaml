@@ -1,0 +1,316 @@
+metadata:
+  creationTimestamp: "2025-02-23T13:38:41Z"
+  generation: 1714
+  managedFields:
+  - apiVersion: argoproj.io/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:spec:
+        .: {}
+        f:destination:
+          .: {}
+          f:namespace: {}
+          f:server: {}
+        f:project: {}
+        f:source:
+          .: {}
+          f:path: {}
+          f:repoURL: {}
+        f:syncPolicy:
+          .: {}
+          f:automated: {}
+      f:status:
+        .: {}
+        f:health: {}
+        f:sourceHydrator: {}
+        f:summary: {}
+        f:sync:
+          .: {}
+          f:comparedTo:
+            .: {}
+            f:destination: {}
+            f:source: {}
+    manager: argocd-server
+    operation: Update
+    time: "2025-02-24T14:25:11Z"
+  - apiVersion: argoproj.io/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:controllerNamespace: {}
+        f:health:
+          f:lastTransitionTime: {}
+          f:status: {}
+        f:history: {}
+        f:operationState:
+          .: {}
+          f:finishedAt: {}
+          f:message: {}
+          f:operation:
+            .: {}
+            f:initiatedBy:
+              .: {}
+              f:username: {}
+            f:retry: {}
+            f:sync:
+              .: {}
+              f:revision: {}
+              f:syncStrategy:
+                .: {}
+                f:hook: {}
+          f:phase: {}
+          f:startedAt: {}
+          f:syncResult:
+            .: {}
+            f:resources: {}
+            f:revision: {}
+            f:source:
+              .: {}
+              f:path: {}
+              f:repoURL: {}
+        f:reconciledAt: {}
+        f:resources: {}
+        f:sourceType: {}
+        f:summary:
+          f:images: {}
+        f:sync:
+          f:comparedTo:
+            f:destination:
+              f:namespace: {}
+              f:server: {}
+            f:source:
+              f:path: {}
+              f:repoURL: {}
+          f:revision: {}
+          f:status: {}
+    manager: argocd-application-controller
+    operation: Update
+    time: "2025-02-25T04:52:59Z"
+  name: playlist-recommender
+  namespace: argocd
+  resourceVersion: "2102532"
+  uid: 5e5b8717-f76b-42d3-9a44-957912eb4975
+spec:
+  destination:
+    namespace: isaac
+    server: https://kubernetes.default.svc
+  project: isaac-project
+  source:
+    path: k8s
+    repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  syncPolicy:
+    automated: {}
+status:
+  controllerNamespace: argocd
+  health:
+    lastTransitionTime: "2025-02-24T13:56:14Z"
+    status: Progressing
+  history:
+  - deployStartedAt: "2025-02-24T12:25:59Z"
+    deployedAt: "2025-02-24T12:26:00Z"
+    id: 9
+    initiatedBy:
+      automated: true
+    revision: 436bcad9f1884d501a934d15577a94ddef85da13
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T12:46:24Z"
+    deployedAt: "2025-02-24T12:46:25Z"
+    id: 10
+    initiatedBy:
+      username: isaac
+    revision: c828a7b84db5b05e89ed025bc4b820fe63d630e4
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T12:48:44Z"
+    deployedAt: "2025-02-24T12:48:45Z"
+    id: 11
+    initiatedBy:
+      username: isaac
+    revision: 84cfe591e0ca65b8858e23cb3eec8eb26f8f7619
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T13:56:00Z"
+    deployedAt: "2025-02-24T13:56:00Z"
+    id: 12
+    initiatedBy:
+      automated: true
+    revision: cc5d8b19ec7d6c90401f9cf729b036feebdce586
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T13:59:12Z"
+    deployedAt: "2025-02-24T13:59:12Z"
+    id: 13
+    initiatedBy:
+      automated: true
+    revision: a816d59b034369ecbbc5716cedf1f35a7c986526
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T14:00:35Z"
+    deployedAt: "2025-02-24T14:00:35Z"
+    id: 14
+    initiatedBy:
+      username: isaac
+    revision: a816d59b034369ecbbc5716cedf1f35a7c986526
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T14:06:00Z"
+    deployedAt: "2025-02-24T14:06:01Z"
+    id: 15
+    initiatedBy:
+      username: isaac
+    revision: 34731a5048237250b144b675724ce2287e9b68cd
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T14:08:21Z"
+    deployedAt: "2025-02-24T14:08:23Z"
+    id: 16
+    initiatedBy:
+      username: isaac
+    revision: c7faad52ee7e0bb6913d01336b14bc82bfc27604
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T14:16:46Z"
+    deployedAt: "2025-02-24T14:16:46Z"
+    id: 17
+    initiatedBy:
+      username: isaac
+    revision: 2cfb318a6c2cde9b668e5f799c2052a694bfcabd
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  - deployStartedAt: "2025-02-24T14:25:10Z"
+    deployedAt: "2025-02-24T14:25:11Z"
+    id: 18
+    initiatedBy:
+      username: isaac
+    revision: 2cfb318a6c2cde9b668e5f799c2052a694bfcabd
+    source:
+      path: k8s
+      repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  operationState:
+    finishedAt: "2025-02-24T14:25:11Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        username: isaac
+      retry: {}
+      sync:
+        revision: 2cfb318a6c2cde9b668e5f799c2052a694bfcabd
+        syncStrategy:
+          hook: {}
+    phase: Succeeded
+    startedAt: "2025-02-24T14:25:10Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: ConfigMap
+        message: configmap/playlist-dataset-config unchanged
+        name: playlist-dataset-config
+        namespace: isaac
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Running
+        kind: PersistentVolumeClaim
+        message: persistentvolumeclaim/project2-pv-isaac unchanged
+        name: project2-pv-isaac
+        namespace: isaac
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/isaac-playlists-recommender-service unchanged
+        name: isaac-playlists-recommender-service
+        namespace: isaac
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        kind: Deployment
+        message: deployment.apps/isaac-playlists-recommender-ml unchanged
+        name: isaac-playlists-recommender-ml
+        namespace: isaac
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        kind: Deployment
+        message: deployment.apps/isaac-playlists-recommender-frontend unchanged
+        name: isaac-playlists-recommender-frontend
+        namespace: isaac
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      revision: 2cfb318a6c2cde9b668e5f799c2052a694bfcabd
+      source:
+        path: k8s
+        repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+  reconciledAt: "2025-02-25T04:52:59Z"
+  resources:
+  - kind: ConfigMap
+    name: playlist-dataset-config
+    namespace: isaac
+    status: Synced
+    version: v1
+  - health:
+      status: Healthy
+    kind: PersistentVolumeClaim
+    name: project2-pv-isaac
+    namespace: isaac
+    status: Synced
+    version: v1
+  - health:
+      status: Progressing
+    kind: Service
+    name: isaac-playlists-recommender-service
+    namespace: isaac
+    status: Synced
+    version: v1
+  - group: apps
+    health:
+      status: Healthy
+    kind: Deployment
+    name: isaac-playlists-recommender-frontend
+    namespace: isaac
+    status: Synced
+    version: v1
+  - group: apps
+    health:
+      message: 'Waiting for rollout to finish: 0 of 1 updated replicas are available...'
+      status: Progressing
+    kind: Deployment
+    name: isaac-playlists-recommender-ml
+    namespace: isaac
+    status: Synced
+    version: v1
+  sourceHydrator: {}
+  sourceType: Directory
+  summary:
+    images:
+    - kemurukagami/playlists-recommender-system-frontend:latest
+    - kemurukagami/playlists-recommender-system-ml:latest
+  sync:
+    comparedTo:
+      destination:
+        namespace: isaac
+        server: https://kubernetes.default.svc
+      source:
+        path: k8s
+        repoURL: https://github.com/kemurukagami/Song_Recommendation_App.git
+    revision: 2cfb318a6c2cde9b668e5f799c2052a694bfcabd
+    status: Synced
