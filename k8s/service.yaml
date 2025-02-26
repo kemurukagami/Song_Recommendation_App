@@ -4,7 +4,7 @@ metadata:
   name: isaac-playlists-recommender-service
   namespace: isaac
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: isaac-playlists-recommender-frontend
   ports:
