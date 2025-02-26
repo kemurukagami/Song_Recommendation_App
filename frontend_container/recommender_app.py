@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 import pickle
 import os
 import time
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
+CORS(app)  # Enable CORS for frontend integration
 
 # Check if running inside Docker (Docker sets the `container` environment variable)
 IN_DOCKER = os.path.exists("/app")
@@ -37,6 +39,11 @@ def load_model():
         MODEL_VERSION = "0.1"
         MODEL_DATE = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(modified_time))
 
+# Serve a basic web-based frontend
+@app.route("/")
+def home():
+    return render_template("index.html")
+
 # API endpoint to get recommendations
 @app.route("/api/recommender", methods=["POST"])
 def recommend():
@@ -65,4 +72,5 @@ def recommend():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=52008)
+    port = int(os.getenv("PORT", 52008))  # Allow custom port configuration
+    app.run(host="0.0.0.0", port=port)

@@ -29,9 +29,7 @@ df_trans = pd.DataFrame(te_array, columns=te.columns_)
 
 frequent_itemsets = apriori(df_trans, min_support=0.03, use_colnames=True)
 
-rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.05)
-
-top_rules = rules.sort_values(by='lift', ascending=False).head(10)
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.5)
 
 with open(MODEL_PATH, "wb") as f:
     pickle.dump(rules, f)
