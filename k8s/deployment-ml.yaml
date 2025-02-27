@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: playlists-recommender-ml
-        image: kemurukagami/playlists-recommender-system-ml:0.4
+        image: kemurukagami/playlists-recommender-system-ml:0.5
         env:
         - name: DATASET_FILE
           valueFrom:
