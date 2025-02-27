@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song Recommender</title>
+    <script>
+        async function getRecommendations() {
+            const inputSongs = document.getElementById("songs").value.split(",").map(s => s.trim());
+            const response = await fetch("/api/recommender", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ songs: inputSongs })
+            });
+
+            const data = await response.json();
+            document.getElementById("results").innerText = data.songs ? data.songs.join(", ") : "No recommendations found.";
+        }
+    </script>
+</head>
+<body>
+    <h1>Song Recommendation System</h1>
+    <p>Enter song names (comma-separated):</p>
+    <input type="text" id="songs" placeholder="e.g., Snapback">
+    <button onclick="getRecommendations()">Get Recommendations</button>
+    <h2>Recommended Songs:</h2>
+    <p id="results"></p>
+</body>
+</html>
