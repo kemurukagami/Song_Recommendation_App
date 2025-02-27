@@ -36,4 +36,5 @@ with open(MODEL_PATH, "wb") as f:
 
 print(f"Model generated from: {DATASET_FILE}")
 print(f"Model saved at: {MODEL_PATH}")
+top_rules = rules.sort_values(by='lift', ascending=False).head(10)
 print(top_rules)
