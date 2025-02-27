@@ -4,4 +4,4 @@ metadata:
   name: playlist-dataset-config
   namespace: isaac
 data:
-  dataset: "/app/shared/data/2023_spotify_ds1.csv"
+  dataset: "/app/shared/data/2023_spotify_ds2.csv"

@@ -4,26 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Song Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #e9ecef;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .loading {
+            font-style: italic;
+            color: #777;
+        }
+    </style>
     <script>
         async function getRecommendations() {
-            const inputSongs = document.getElementById("songs").value.split(",").map(s => s.trim());
-            const response = await fetch("/api/recommender", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ songs: inputSongs })
-            });
+            const inputField = document.getElementById("songs");
+            const resultsDiv = document.getElementById("results");
+            const metaInfo = document.getElementById("meta-info");
+            
+            // Clear previous results and show loading message
+            resultsDiv.innerHTML = "<p class='loading'>Fetching recommendations...</p>";
+            metaInfo.innerHTML = "";
 
-            const data = await response.json();
-            document.getElementById("results").innerText = data.songs ? data.songs.join(", ") : "No recommendations found.";
+            const inputSongs = inputField.value.split(",").map(s => s.trim()).filter(s => s.length > 0);
+            if (inputSongs.length === 0) {
+                resultsDiv.innerHTML = "<p style='color: red;'>Please enter at least one song.</p>";
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/recommender", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ songs: inputSongs })
+                });
+
+                const data = await response.json();
+                resultsDiv.innerHTML = "";
+
+                if (data.songs && data.songs.length > 0) {
+                    resultsDiv.innerHTML = "<h3>Recommended Songs:</h3><ul>" + 
+                        data.songs.map(song => `<li>${song}</li>`).join("") + 
+                        "</ul>";
+                } else {
+                    resultsDiv.innerHTML = "<p>No recommendations found.</p>";
+                }
+
+                // Append model version and date
+                metaInfo.innerHTML = `<p><strong>Model Version:</strong> ${data.version || "N/A"}<br>
+                                      <strong>Model Date:</strong> ${data.model_date || "N/A"}</p>`;
+            } catch (error) {
+                resultsDiv.innerHTML = "<p style='color: red;'>Error fetching recommendations.</p>";
+            }
         }
     </script>
 </head>
 <body>
-    <h1>Song Recommendation System</h1>
-    <p>Enter song names (comma-separated):</p>
-    <input type="text" id="songs" placeholder="e.g., Snapback">
-    <button onclick="getRecommendations()">Get Recommendations</button>
-    <h2>Recommended Songs:</h2>
-    <p id="results"></p>
+    <div class="container">
+        <h1>🎵 Song Recommendation System</h1>
+        <p>Enter song names (comma-separated):</p>
+        <input type="text" id="songs" placeholder="e.g., Snapback">
+        <button onclick="getRecommendations()">Get Recommendations</button>
+
+        <div class="results">
+            <div id="results"></div>
+            <div id="meta-info"></div>
+        </div>
+    </div>
 </body>
 </html>
